@@ -8,7 +8,6 @@ const client = new PocketBase('http://127.0.0.1:8090');
   providedIn: 'root',
 })
 export class UsersService {
-
   constructor(private http: HttpClient) {}
 
   async createUser(user: any) {
@@ -18,10 +17,15 @@ export class UsersService {
       password: user.password,
       passwordConfirm: user.passwordConfirm,
     });
-    // send verification email
-    await client.users.requestVerification(user.email);
+
+    this.sendVerificationMail(user.email);
 
     return newUser;
+  }
+
+  async sendVerificationMail(email: string) {
+    // send verification email
+    return await client.users.requestVerification(email);
   }
 
   async logIn(user: any) {
